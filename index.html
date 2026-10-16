@@ -27,7 +27,8 @@ const RULES=[ // attacker, prey, period, preySurvive
  {a:'bunny',p:'snake',per:7,s:.34},
  {a:'tortoise',p:'bunny',per:12,s:.25},
  {a:'ghost',p:'tortoise',per:14,s:.49},
- {a:'snake',p:'ghost',per:21,s:.23}];
+ {a:'snake',p:'ghost',per:21,s:.23},
+ {a:'tortoise',p:'ghost',per:15,s:.30}];
 RULES.forEach(r=>r.t=r.per);
 const SCENES=['Jungle','City','Riverside'];
 let ents=[],floats=[],events=[],parts=[],sceneIdx=0,prevScene=0,sceneT=0,fade=1,banner=3;
@@ -223,9 +224,9 @@ function hud(){
  // timers
  const y=H-70;pill(16,y-6,W-32,64,'rgba(10,20,15,.62)');
  ctx.textAlign='center';
- RULES.forEach((r,i)=>{const cx=16+(W-32)/8*(2*i+1);
+ RULES.forEach((r,i)=>{const cx=16+(W-32)/10*(2*i+1);
   ctx.font='26px '+EMO;ctx.fillText(SP[r.a]+'→'+SP[r.p],cx,y+14);
-  ctx.font='500 20px '+FONT;ctx.fillStyle='#ffe9a8';ctx.fillText(Math.ceil(r.t)+'s · prey lives '+Math.round(r.s*100)+'%',cx,y+42);});
+  ctx.font='500 18px '+FONT;ctx.fillStyle='#ffe9a8';ctx.fillText(Math.ceil(r.t)+'s · prey '+Math.round(r.s*100)+'%',cx,y+42);});
  // death statistics
  pill(16,88,W-32,44,'rgba(60,12,12,.65)');
  ctx.textAlign='left';ctx.fillStyle='#fff';ctx.font='26px '+EMO;ctx.fillText('☠️',30,111);
