@@ -99,7 +99,7 @@ function drawBg(i){
 /* ---------- drawing entities ---------- */
 function drawEnt(e,time){
  const S=88,wob=Math.sin(time*6+e.ph);
- ctx.save();ctx.translate(e.x,e.y);
+ ctx.save();ctx.globalAlpha=1;ctx.translate(e.x,e.y);
  ctx.fillStyle='rgba(0,0,0,.22)';ctx.beginPath();ctx.ellipse(0,6,36,10,0,0,7);ctx.fill();
  let dy=0,rot=0,dx=0;
  if(e.act==='dance'){dy=-Math.abs(Math.sin(time*7+e.ph))*22;rot=Math.sin(time*7+e.ph)*.35;}
@@ -109,6 +109,8 @@ function drawEnt(e,time){
  if(e.hop>0)dy-=Math.sin(Math.min(1,e.hop)*Math.PI)*40;
  ctx.translate(dx,dy);ctx.rotate(rot);
  ctx.font=S+'px '+EMO;ctx.textAlign='center';ctx.textBaseline='bottom';
+ ctx.globalAlpha=1;ctx.fillStyle={snake:'#4caf50',bunny:'#f7c6d9',tortoise:'#c9a35a',ghost:'#dfe6ff'}[e.type];
+ ctx.beginPath();ctx.arc(0,-42,50,0,7);ctx.fill();ctx.lineWidth=5;ctx.strokeStyle='#fff';ctx.stroke();
  ctx.save();ctx.scale(e.face,1);ctx.fillText(SP[e.type],0,0);ctx.restore();ctx.globalAlpha=1;
  ctx.font='40px '+EMO;
  if(e.act==='dance'){ctx.fillText('🎵',-44+Math.sin(time*3+e.ph)*8,-70-((time*40+e.ph*20)%30));}
@@ -254,7 +256,7 @@ resetGame();
 let last=performance.now();
 function frame(now){
  const dt=Math.min(.05,(now-last)/1000);last=now;const time=now/1000;
- update(dt,time);
+ ctx.globalAlpha=1;update(dt,time);
  if(fade<1){drawBg(prevScene);ctx.globalAlpha=fade;drawBg(sceneIdx);ctx.globalAlpha=1;}else drawBg(sceneIdx);
  ents.slice().sort((a,b)=>a.y-b.y).forEach(e=>drawEnt(e,time));
  weapons.forEach(drawWeapon);
