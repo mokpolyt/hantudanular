@@ -182,12 +182,20 @@ function update(dt,time){
     if(d>6){const sp=e.type==='tortoise'?28:55;e.x+=(e.tx-e.x)/d*sp*dt;e.y+=(e.ty-e.y)/d*sp*dt;e.face=e.tx>e.x?1:-1;}}
   }
  });
+ // spread out
+ const L=ents.filter(e=>!e.dead&&!e.fall);
+ for(let i=0;i<L.length;i++)for(let j=i+1;j<L.length;j++){const a=L[i],b=L[j];
+  const duel=events.some(v=>(v.a===a&&v.p===b)||(v.a===b&&v.p===a));
+  const min=duel?72:104;let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy);
+  if(d<min){if(d<1){dx=rnd(-1,1);dy=rnd(-1,1);d=Math.hypot(dx,dy)||1;}
+   const push=(min-d)*6*dt,ux=dx/d,uy=dy/d;a.x-=ux*push;a.y-=uy*push;b.x+=ux*push;b.y+=uy*push;}}
+ L.forEach(e=>{e.x=Math.max(50,Math.min(750,e.x));e.y=Math.max(640,Math.min(860,e.y));});
  // attacks
  events=events.filter(ev=>{
   ev.t+=dt;const {a,p}=ev;
   if(a.dead||p.dead){a.busy=p.busy=false;return false;}
   const k=Math.min(1,ev.t/1.1),d=Math.hypot(p.x-a.x,p.y-a.y);
-  if(d>50){a.x+=(p.x-a.x)/d*330*dt;a.y+=(p.y-a.y)/d*330*dt;}
+  if(d>72){a.x+=(p.x-a.x)/d*330*dt;a.y+=(p.y-a.y)/d*330*dt;}
   a.face=p.x>a.x?1:-1;p.face=-a.face;
   if(ev.t>=1.6){resolve(ev);return false;}
   return true;
